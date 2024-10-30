@@ -11,16 +11,16 @@ import sttp.client4.quick._
 import sttp.client4.Response
 
 import io.circe.parser
+import forex.config.OneFrameConfig
 
-
-class OneFrameClient[F[_]: Applicative] extends Algebra[F] {
+class OneFrameClient[F[_]: Applicative](config: OneFrameConfig) extends Algebra[F] {
 
   override def get(pair: Rate.Pair): F[Error Either Rate] = {
     println("OneFrameClient.get pair " + pair)
 
     val response: Response[String] = quickRequest
-      .get(uri"http://localhost:8080/rates?pair=${pair.from.toString}${pair.to.toString}")
-      .header("token", "10dc303535874aeccc86a8251e6992f5")
+      .get(uri"${config.uri}/rates?pair=${pair.from.toString}${pair.to.toString}")
+      .header("token", config.token)
       .send()
 
     println("response.code " + response.code)
