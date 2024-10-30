@@ -65,5 +65,6 @@ libraryDependencies ++= Seq(
   Libraries.logback,
   Libraries.scalaTest      % Test,
   Libraries.scalaCheck     % Test,
-  Libraries.catsScalaCheck % Test
+  Libraries.catsScalaCheck % Test,
+  "com.softwaremill.sttp.client4" %% "core" % "4.0.0-M6"
 )
