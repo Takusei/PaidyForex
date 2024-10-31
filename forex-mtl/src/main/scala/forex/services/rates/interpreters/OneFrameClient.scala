@@ -31,6 +31,13 @@ class OneFrameClient[F[_]: Applicative](config: OneFrameConfig, ratesCache: Rate
     }
   }
 
+  /**
+    * Fetches the rate for a given pair from the OneFrame API
+    * and caches it in the rates cache
+    *
+    * @param pair
+    * @return the rate for the given pair or an error
+    */
   def getRateFromOneFrame(pair: Rate.Pair): F[Error Either Rate] = {
     val response: Response[String] = quickRequest
       .get(uri"${config.uri}/rates?pair=${pair.from.toString}${pair.to.toString}")
