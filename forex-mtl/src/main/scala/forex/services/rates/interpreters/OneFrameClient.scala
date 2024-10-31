@@ -49,7 +49,7 @@ class OneFrameClient[F[_]: Applicative](config: OneFrameConfig, ratesCache: Rate
           case Some(firstObject) =>
             firstObject.hcursor.downField("price").as[Double] match {
               case Right(value) => value
-              case Left(_) => 0.0
+              case Left(_)      => 0.0
             }
           case None => 0.0
         }
@@ -57,7 +57,7 @@ class OneFrameClient[F[_]: Applicative](config: OneFrameConfig, ratesCache: Rate
     }
 
     logger.info(s"Successfully parsed price $price from response for pair $pair")
-    
+
     val currentRate = Rate(pair, Price(price), Timestamp.now)
     ratesCache.put(pair.toString, currentRate)
     currentRate.asRight[Error].pure[F]

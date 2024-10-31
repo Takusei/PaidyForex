@@ -16,8 +16,8 @@ object Dependencies {
     val scalaTest      = "3.2.7"
     val catsScalaCheck = "0.3.2"
 
-    val sttp           = "4.0.0-M6"
-    val scaffeine      = "5.3.0"
+    val sttp      = "4.0.0-M6"
+    val scaffeine = "5.3.0"
   }
 
   object Libraries {
@@ -29,7 +29,7 @@ object Dependencies {
     lazy val fs2        = "co.fs2"        %% "fs2-core"    % Versions.fs2 // Compositional, streaming I/O library for Scala
 
     lazy val http4sDsl       = http4s("http4s-dsl") // HTTP DSL
-    lazy val http4sServer    = http4s("http4s-blaze-server")  // Blaze server
+    lazy val http4sServer    = http4s("http4s-blaze-server") // Blaze server
     lazy val http4sCirce     = http4s("http4s-circe") // Circe support for http4s
     lazy val circeCore       = circe("circe-core") // JSON library for Scala
     lazy val circeGeneric    = circe("circe-generic") // Generic support for Circe
@@ -44,7 +44,7 @@ object Dependencies {
     lazy val logback = "ch.qos.logback" % "logback-classic" % Versions.logback // Logging framework
 
     // HTTP client
-    lazy val sttp = "com.softwaremill.sttp.client4" %% "core" % Versions.sttp // The Scala HTTP client 
+    lazy val sttp = "com.softwaremill.sttp.client4" %% "core" % Versions.sttp // The Scala HTTP client
 
     // scaffeine cache
     lazy val scaffeine = "com.github.blemale" %% "scaffeine" % Versions.scaffeine

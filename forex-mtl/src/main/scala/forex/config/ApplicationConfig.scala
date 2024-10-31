@@ -13,7 +13,7 @@ case class HttpConfig(
     timeout: FiniteDuration
 )
 
-case class OneFrameConfig (
+case class OneFrameConfig(
     uri: String,
     token: String
 )

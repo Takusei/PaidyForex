@@ -1,9 +1,8 @@
 package forex.cache
 
-import com.github.blemale.scaffeine.{Scaffeine, Cache}
+import com.github.blemale.scaffeine.{ Cache, Scaffeine }
 import forex.domain.Rate
 import scala.concurrent.duration._
-
 
 object CacheProvider {
   type RatesCache = Cache[String, Rate]
