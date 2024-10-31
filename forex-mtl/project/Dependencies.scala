@@ -16,7 +16,8 @@ object Dependencies {
     val scalaTest      = "3.2.7"
     val catsScalaCheck = "0.3.2"
 
-    val sttp = "4.0.0-M6"
+    val sttp           = "4.0.0-M6"
+    val scaffeine      = "5.3.0"
   }
 
   object Libraries {
@@ -42,7 +43,11 @@ object Dependencies {
     // Runtime
     lazy val logback = "ch.qos.logback" % "logback-classic" % Versions.logback // Logging framework
 
-    lazy val sttp       = "com.softwaremill.sttp.client4" %% "core" % Versions.sttp // The Scala HTTP client 
+    // HTTP client
+    lazy val sttp = "com.softwaremill.sttp.client4" %% "core" % Versions.sttp // The Scala HTTP client 
+
+    // scaffeine cache
+    lazy val scaffeine = "com.github.blemale" %% "scaffeine" % Versions.scaffeine
 
     // Test
     lazy val scalaTest      = "org.scalatest"     %% "scalatest"       % Versions.scalaTest

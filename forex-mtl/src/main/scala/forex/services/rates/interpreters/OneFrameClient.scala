@@ -14,19 +14,31 @@ import io.circe.parser
 import forex.config.OneFrameConfig
 
 import forex.logger.Logger.logger
+import forex.cache.CacheProvider.RatesCache
 
-class OneFrameClient[F[_]: Applicative](config: OneFrameConfig) extends Algebra[F] {
+class OneFrameClient[F[_]: Applicative](config: OneFrameConfig, ratesCache: RatesCache) extends Algebra[F] {
 
   override def get(pair: Rate.Pair): F[Error Either Rate] = {
-    println("OneFrameClient.get pair " + pair)
+    logger.info(s"OneFrameClient.get called with pair ${pair.toString()}")
 
+    ratesCache.getIfPresent(pair.toString) match {
+      case Some(rate) =>
+        logger.info(s"Rate for pair $pair found in cache")
+        rate.asRight[Error].pure[F]
+      case None =>
+        logger.warn(s"Rate for pair $pair not found in cache, will fetch from OneFrame API")
+        getRateFromOneFrame(pair)
+    }
+  }
+
+  def getRateFromOneFrame(pair: Rate.Pair): F[Error Either Rate] = {
     val response: Response[String] = quickRequest
       .get(uri"${config.uri}/rates?pair=${pair.from.toString}${pair.to.toString}")
       .header("token", config.token)
       .send()
 
-    logger.warn(s"Request to OneFrame API for pair $pair returned status code ${response.code}")
-    
+    logger.info(s"Request to OneFrame API for pair $pair returned status code ${response.code}")
+
     val parsedResponse = parser.parse(response.body)
     logger.info(s"Parsed response: $parsedResponse")
 
@@ -44,6 +56,10 @@ class OneFrameClient[F[_]: Applicative](config: OneFrameConfig) extends Algebra[
       case Left(_) => 0.0
     }
 
-    Rate(pair, Price(price), Timestamp.now).asRight[Error].pure[F]
+    logger.info(s"Successfully parsed price $price from response for pair $pair")
+    
+    val currentRate = Rate(pair, Price(price), Timestamp.now)
+    ratesCache.put(pair.toString, currentRate)
+    currentRate.asRight[Error].pure[F]
   }
 }
