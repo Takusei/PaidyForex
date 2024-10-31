@@ -13,6 +13,8 @@ import sttp.client4.Response
 import io.circe.parser
 import forex.config.OneFrameConfig
 
+import forex.logger.Logger.logger
+
 class OneFrameClient[F[_]: Applicative](config: OneFrameConfig) extends Algebra[F] {
 
   override def get(pair: Rate.Pair): F[Error Either Rate] = {
@@ -23,11 +25,10 @@ class OneFrameClient[F[_]: Applicative](config: OneFrameConfig) extends Algebra[
       .header("token", config.token)
       .send()
 
-    println("response.code " + response.code)
-    // prints: 200
+    logger.warn(s"Request to OneFrame API for pair $pair returned status code ${response.code}")
     
     val parsedResponse = parser.parse(response.body)
-    println(parsedResponse)
+    logger.info(s"Parsed response: $parsedResponse")
 
     // Assuming the response is a JSON array with a single object
     val price: Double = parsedResponse match {
