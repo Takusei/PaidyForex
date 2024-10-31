@@ -63,8 +63,8 @@ libraryDependencies ++= Seq(
   Libraries.circeParser,
   Libraries.pureConfig,
   Libraries.logback,
+  Libraries.sttp,
   Libraries.scalaTest      % Test,
   Libraries.scalaCheck     % Test,
   Libraries.catsScalaCheck % Test,
-  "com.softwaremill.sttp.client4" %% "core" % "4.0.0-M6"
 )
