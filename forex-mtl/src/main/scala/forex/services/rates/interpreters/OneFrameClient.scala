@@ -5,7 +5,7 @@ import cats.Applicative
 import cats.syntax.applicative._
 import cats.syntax.either._
 import forex.domain.{ Price, Rate, Timestamp }
-import forex.services.rates.errors._
+import forex.services.rates.Errors._
 
 import sttp.client4.quick._
 import sttp.client4.Response
