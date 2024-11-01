@@ -50,18 +50,12 @@ class OneFrameClient[F[_]: Applicative](config: OneFrameConfig, ratesCache: Rate
     logger.info(s"Parsed response: $parsedResponse")
 
     // Assuming the response is a JSON array with a single object
-    val price: Double = parsedResponse match {
-      case Right(json) =>
-        json.asArray.flatMap(_.headOption) match {
-          case Some(firstObject) =>
-            firstObject.hcursor.downField("price").as[Double] match {
-              case Right(value) => value
-              case Left(_)      => 0.0
-            }
-          case None => 0.0
-        }
-      case Left(_) => 0.0
-    }
+    val price: Double = (for {
+      json <- parsedResponse.toOption
+      array <- json.asArray
+      firstObject <- array.headOption
+      price <- firstObject.hcursor.downField("price").as[Double].toOption
+    } yield price).getOrElse(0.0)
 
     logger.info(s"Successfully parsed price $price from response for pair $pair")
 

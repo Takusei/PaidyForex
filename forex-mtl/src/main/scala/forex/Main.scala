@@ -14,7 +14,7 @@ object Main extends IOApp {
 }
 
 class Application[F[_]: ConcurrentEffect: Timer] {
-
+  // Nested For-Comprehensions
   def stream(ec: ExecutionContext): Stream[F, Unit] =
     for {
       config <- Config.stream("app")
